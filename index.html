@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        .margindiv{
+            margin: 0 10px;
+        }
+    </style>
+    <script>
+        let childWindows = []; // 保存子窗口的数组
+        function query(){
+            var text = document.getElementById("textId").value;
+
+            var code = text.split(/[(\r\n)\r\n]+/); // 根据换行或者回车进行识别
+            for(var i=0;i<code.length;i++){
+                var item = code[i];
+
+                item = removeSpaces(item);
+                if(item!= null && item != ''){
+//                    console.log(item);
+                    var name = item.slice(0,-7);
+                    var url = "https://cha.mylol.cn/?name="+name+"&area=2";
+                    var windowFeatures = "width=1000,height=600"; // 新窗口的可选特性，如宽度和高度
+
+                    var childWindow = window.open(url, "_blank", windowFeatures);
+                    childWindows.push(childWindow);
+                }
+            }
+
+
+//        code = Array.from(new Set(code)); // 去重
+
+        }
+        function removeSpaces(inputString) {
+            return inputString.replace(/\s/g, '');
+        }
+        function clearText(){
+            var text = document.getElementById("textId");
+            text.value = '';
+
+        }
+        function closeChildWindows() {
+            // 循环关闭所有子窗口
+            for (var j = 0;j<childWindows.length;j++) {
+                var childWindow = childWindows[j];
+                childWindow.close();
+            }
+
+            // 清空子窗口数组
+            childWindows = [];
+        }
+    </script>
+</head>
+<body>
+    <!--<input  type="text" id="textId" style="height: 200px;">-->
+    <div style="left: 35%;top: 40%;position: absolute; ">
+        <textarea cols="50" rows="6" id="textId" ></textarea>
+        <input type="button" class="margindiv"  onclick="query()" value="查询">
+        <input type="button" class="margindiv" onclick="clearText()" value="清空">
+        <input type="button" class="margindiv" onclick="closeChildWindows()" value="一键关闭">
+    </div>
+
+
+</body>
+</html>
